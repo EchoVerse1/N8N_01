@@ -11,7 +11,7 @@
     },
     {
       "parameters": {
-        "functionCode": "return [{\n  json: {\n    question: \"Why don’t skeletons fight each other?\",\n    answer: \"Because they don’t have the guts!\"\n  }\n}];"
+        "functionCode": "return [{\n  json: {\n    question: \"Why don’t skeletons fight each other?\",\n    answer: \"Because they don’t have the guts!\",\n    date: new Date().toISOString()\n  }\n}];"
       },
       "id": "2",
       "name": "Generate Joke",
@@ -23,10 +23,10 @@
       "parameters": {
         "operation": "append",
         "sheetId": "YOUR_SHEET_ID",
-        "range": "Sheet1!A:B",
+        "range": "Sheet1!A:C",
         "options": {},
         "valueInputMode": "RAW",
-        "values": "={{ [ $json[\"question\"], $json[\"answer\"] ] }}"
+        "values": "={{ [ $json[\"question\"], $json[\"answer\"], $json[\"date\"] ] }}"
       },
       "id": "3",
       "name": "Google Sheets",
