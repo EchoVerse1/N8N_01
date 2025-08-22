@@ -1,30 +1,41 @@
 {
+  "name": "Joke to Google Sheets",
   "nodes": [
     {
       "parameters": {},
       "id": "1",
       "name": "Start",
-      "type": "n8n-nodes-base.start",
+      "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [
-        -200,
-        0
-      ]
+      "position": [250, 300]
     },
     {
       "parameters": {
-        "url": "https://official-joke-api.appspot.com/random_joke",
-        "responseFormat": "json",
-        "options": {}
+        "functionCode": "return [{\n  json: {\n    question: \"Why don’t skeletons fight each other?\",\n    answer: \"Because they don’t have the guts!\"\n  }\n}];"
       },
       "id": "2",
-      "name": "Get Joke",
-      "type": "n8n-nodes-base.httpRequest",
+      "name": "Generate Joke",
+      "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        200,
-        0
-      ]
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": "YOUR_SHEET_ID",
+        "range": "Sheet1!A:B",
+        "options": {},
+        "valueInputMode": "RAW",
+        "values": "={{ [ $json[\"question\"], $json[\"answer\"] ] }}"
+      },
+      "id": "3",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [750, 300],
+      "credentials": {
+        "googleApi": "YOUR_GOOGLE_CREDENTIAL_NAME"
+      }
     }
   ],
   "connections": {
@@ -32,7 +43,18 @@
       "main": [
         [
           {
-            "node": "Get Joke",
+            "node": "Generate Joke",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Joke": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
             "type": "main",
             "index": 0
           }
